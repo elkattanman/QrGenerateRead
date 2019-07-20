@@ -23,10 +23,13 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import mufixapp.DAO.User;
+import mufixapp.DAO.UserDAO;
 
 /**
  *
@@ -34,8 +37,8 @@ import javax.imageio.ImageIO;
  */
 public class GenrateQr {
 
-    private static final String QR_CODE_IMAGE_PATH = "./MyQRCode.png";
-    private static final String QR_CODE_LOGO_PATH = "./50.png";
+    private static final String QR_CODE_IMAGE_PATH = "./MyQRCode/";
+    private static final String QR_CODE_LOGO_PATH = "./QR_CODE_LOGO_PATH.png";
 
     private void generateQRCodeImage(String text, int width, int height, String filePath)
             throws WriterException, IOException {
@@ -101,8 +104,12 @@ public class GenrateQr {
     }
 
     public static void main(String[] args) {
+        List<User> l=new UserDAO().getAllUSers();
         try {
-            new GenrateQr().generateQRCodeImage("Hussein Zaid", 300, 300, QR_CODE_IMAGE_PATH);
+            for(User u:l){
+                String s=QR_CODE_IMAGE_PATH+u.toString()+".png";
+                new GenrateQr().generateQRCodeImage(u.toString(), 300, 300, s);
+            }
         } catch (WriterException ex) {
             Logger.getLogger(GenrateQr.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
